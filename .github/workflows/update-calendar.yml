@@ -8,6 +8,8 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
@@ -33,3 +35,5 @@ jobs:
           git add FIFA_WorldCup2026.ics
           git diff --cached --quiet || git commit -m "🔄 Auto-update scores $(date -u '+%Y-%m-%d %H:%M UTC')"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
