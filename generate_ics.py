@@ -20,7 +20,6 @@ API_KEY   = os.environ.get("FOOTBALL_DATA_API_KEY", "")
 API_BASE  = "https://api.football-data.org/v4"
 WC_CODE   = "WC"
 OUTPUT    = "FIFA_WorldCup2026.ics"
-TZ_ET     = pytz.timezone("America/New_York")
 
 # ── Flag map ──────────────────────────────────────────────────────────────────
 FLAGS = {
@@ -45,14 +44,14 @@ FLAGS = {
 }
 
 STATUS_EMOJI = {
-    "FINISHED":   "✅",
-    "IN_PLAY":    "🔴",
-    "PAUSED":     "⏸️",
-    "SUSPENDED":  "⚠️",
-    "POSTPONED":  "📅",
-    "CANCELLED":  "❌",
-    "TIMED":      "",
-    "SCHEDULED":  "",
+    "FINISHED":  "✅",
+    "IN_PLAY":   "🔴",
+    "PAUSED":    "⏸️",
+    "SUSPENDED": "⚠️",
+    "POSTPONED": "📅",
+    "CANCELLED": "❌",
+    "TIMED":     "",
+    "SCHEDULED": "",
 }
 
 def flag(name):
@@ -68,8 +67,8 @@ def fetch(path):
         return json.loads(r.read())
 
 def build_summary(match):
-    home = match["homeTeam"]["name"]
-    away = match["awayTeam"]["name"]
+    home   = match["homeTeam"]["name"]
+    away   = match["awayTeam"]["name"]
     status = match["status"]
     score  = match.get("score", {})
     ft     = score.get("fullTime", {})
@@ -81,33 +80,25 @@ def build_summary(match):
         return f"{emoji} {team_str(home)} {h_g}–{a_g} {team_str(away)}"
     elif status in ("IN_PLAY", "PAUSED"):
         curr = score.get("halfTime", ft)
-        hg = curr.get("home", "?")
-        ag = curr.get("away", "?")
+        hg   = curr.get("home", "?")
+        ag   = curr.get("away", "?")
         return f"{emoji} {team_str(home)} {hg}–{ag} {team_str(away)} LIVE"
     else:
-        # scheduled — show stage/group
-        stage = match.get("stage", "")
-        group = match.get("group", "")
-        label = ""
-        if "GROUP" in stage:
-            label = f"Group {group[-1] if group else ''} · " if group else "Group Stage · "
-        elif stage:
-            label = stage.replace("_", " ").title() + " · "
-        return f"⚽ {label}{team_str(home)} vs {team_str(away)}"
+        return f"⚽️ {team_str(home)} vs {team_str(away)}"
 
 def build_description(match):
-    status = match["status"]
     stage  = match.get("stage", "").replace("_", " ").title()
     group  = match.get("group", "")
     venue  = match.get("venue", "")
+    status = match["status"]
     lines  = [f"Stage: {stage}"]
     if group:
-        lines.append(f"Group: {group[-1] if len(group)==1 else group}")
+        lines.append(f"Group: {group}")
     if venue:
         lines.append(f"Venue: {venue}")
     lines.append(f"Status: {status}")
     score = match.get("score", {})
-    ft = score.get("fullTime", {})
+    ft    = score.get("fullTime", {})
     if ft.get("home") is not None:
         lines.append(f"Score: {ft['home']}–{ft['away']}")
     return "\\n".join(lines)
@@ -120,10 +111,10 @@ def ics_fold(line):
     result = b""
     while len(encoded) > 75:
         chunk = encoded[:75]
-        # walk back until we're at a clean UTF-8 character boundary
+        # walk back past continuation bytes
         while len(chunk) > 0 and (chunk[-1] & 0xC0) == 0x80:
             chunk = chunk[:-1]
-        # also walk back if we're in the middle of a multi-byte sequence
+        # walk back past leading byte of multi-byte sequence
         while len(chunk) > 0 and (chunk[-1] & 0xC0) == 0xC0:
             chunk = chunk[:-1]
         if not chunk:
@@ -133,28 +124,23 @@ def ics_fold(line):
     result += encoded + b"\r\n"
     return result.decode("utf-8")
 
-
 def make_event(match):
     uid     = f"wc2026-{match['id']}@fifawc2026"
     summary = build_summary(match)
     desc    = build_description(match)
     venue   = match.get("venue", "")
     if not venue:
-        area = match.get("area", {}).get("name", "")
-        venue = area
+        venue = match.get("area", {}).get("name", "")
 
-    utc_str = match["utcDate"]                        # "2026-06-11T19:00:00Z"
-    dt_utc  = datetime.strptime(utc_str, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.utc)
+    dt_utc  = datetime.strptime(match["utcDate"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.utc)
     dt_end  = dt_utc + timedelta(hours=2)
-    dtstart = dt_utc.strftime("%Y%m%dT%H%M%SZ")
-    dtend   = dt_end.strftime("%Y%m%dT%H%M%SZ")
     dtstamp = datetime.now(pytz.utc).strftime("%Y%m%dT%H%M%SZ")
 
     block  = "BEGIN:VEVENT\r\n"
     block += ics_fold(f"UID:{uid}")
     block += ics_fold(f"SUMMARY:{summary}")
-    block += f"DTSTART:{dtstart}\r\n"
-    block += f"DTEND:{dtend}\r\n"
+    block += f"DTSTART:{dt_utc.strftime('%Y%m%dT%H%M%SZ')}\r\n"
+    block += f"DTEND:{dt_end.strftime('%Y%m%dT%H%M%SZ')}\r\n"
     block += f"DTSTAMP:{dtstamp}\r\n"
     block += ics_fold(f"LOCATION:{venue}")
     block += ics_fold(f"DESCRIPTION:{desc}")
@@ -166,9 +152,9 @@ def main():
         print("❌  Set FOOTBALL_DATA_API_KEY environment variable.")
         return
 
-    print(f"⏳  Fetching matches for WC {WC_CODE}...")
+    print(f"⏳  Fetching all WC 2026 matches...")
     try:
-        data = fetch(f"/competitions/{WC_CODE}/matches?season=2026")
+        data = fetch(f"/competitions/{WC_CODE}/matches?season=2026&dateFrom=2026-06-11&dateTo=2026-07-20")
     except urllib.error.HTTPError as e:
         print(f"❌  API error {e.code}: {e.reason}")
         return
@@ -183,8 +169,8 @@ def main():
     cal += "METHOD:PUBLISH\r\n"
     cal += ics_fold("X-WR-CALNAME:🏆 FIFA World Cup 2026")
     cal += "X-WR-TIMEZONE:America/New_York\r\n"
-    cal += "REFRESH-INTERVAL;VALUE=DURATION:PT6H\r\n"
-    cal += "X-PUBLISHED-TTL:PT6H\r\n"
+    cal += "REFRESH-INTERVAL;VALUE=DURATION:PT3H\r\n"
+    cal += "X-PUBLISHED-TTL:PT3H\r\n"
 
     for m in matches:
         cal += make_event(m)
@@ -195,9 +181,10 @@ def main():
         f.write(cal)
 
     finished = sum(1 for m in matches if m["status"] == "FINISHED")
-    live     = sum(1 for m in matches if m["status"] in ("IN_PLAY","PAUSED"))
+    live     = sum(1 for m in matches if m["status"] in ("IN_PLAY", "PAUSED"))
+    upcoming = len(matches) - finished - live
     print(f"📅  Written {len(matches)} events → {OUTPUT}")
-    print(f"    Finished: {finished}  |  Live: {live}  |  Upcoming: {len(matches)-finished-live}")
+    print(f"    ✅ Finished: {finished}  🔴 Live: {live}  ⏳ Upcoming: {upcoming}")
 
 if __name__ == "__main__":
     main()
