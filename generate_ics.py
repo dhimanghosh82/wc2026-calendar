@@ -120,13 +120,19 @@ def ics_fold(line):
     result = b""
     while len(encoded) > 75:
         chunk = encoded[:75]
-        # don't split a multi-byte UTF-8 char
-        while chunk and (chunk[-1] & 0xC0) == 0x80:
+        # walk back until we're at a clean UTF-8 character boundary
+        while len(chunk) > 0 and (chunk[-1] & 0xC0) == 0x80:
             chunk = chunk[:-1]
+        # also walk back if we're in the middle of a multi-byte sequence
+        while len(chunk) > 0 and (chunk[-1] & 0xC0) == 0xC0:
+            chunk = chunk[:-1]
+        if not chunk:
+            chunk = encoded[:1]
         result += chunk + b"\r\n "
         encoded = encoded[len(chunk):]
     result += encoded + b"\r\n"
     return result.decode("utf-8")
+
 
 def make_event(match):
     uid     = f"wc2026-{match['id']}@fifawc2026"
@@ -142,7 +148,7 @@ def make_event(match):
     dt_end  = dt_utc + timedelta(hours=2)
     dtstart = dt_utc.strftime("%Y%m%dT%H%M%SZ")
     dtend   = dt_end.strftime("%Y%m%dT%H%M%SZ")
-    dtstamp = datetime.utcnow().strftime("%Y%m%dT%H%M%SZ")
+    dtstamp = datetime.now(pytz.utc).strftime("%Y%m%dT%H%M%SZ")
 
     block  = "BEGIN:VEVENT\r\n"
     block += ics_fold(f"UID:{uid}")
