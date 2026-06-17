@@ -26,82 +26,110 @@ OUTPUT    = "FIFA_WorldCup2026.ics"
 # Key: frozenset of {home_team_name, away_team_name} as returned by the API
 _V = {
     # Group A
-    frozenset({"Mexico", "South Africa"}):            "Estadio Azteca, Mexico City, Mexico",
-    frozenset({"Czechia", "South Africa"}):           "Mercedes-Benz Stadium, Atlanta, GA",
-    frozenset({"Mexico", "Korea Republic"}):          "Estadio Akron, Guadalajara, Mexico",
-    frozenset({"Czechia", "Mexico"}):                 "Estadio Azteca, Mexico City, Mexico",
-    frozenset({"South Africa", "Korea Republic"}):    "Estadio BBVA, Monterrey, Mexico",
+    frozenset({"Mexico", "South Africa"}):                    "Estadio Azteca, Mexico City, Mexico",
+    frozenset({"Korea Republic", "Czechia"}):                 "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"Czechia", "South Africa"}):                   "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Mexico", "Korea Republic"}):                  "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"Czechia", "Mexico"}):                         "Estadio Azteca, Mexico City, Mexico",
+    frozenset({"South Africa", "Korea Republic"}):            "Estadio BBVA, Monterrey, Mexico",
     # Group B
-    frozenset({"Switzerland", "Bosnia and Herzegovina"}): "SoFi Stadium, Inglewood, CA",
-    frozenset({"Canada", "Qatar"}):                   "BC Place, Vancouver, Canada",
-    frozenset({"Switzerland", "Canada"}):             "BC Place, Vancouver, Canada",
-    frozenset({"Bosnia and Herzegovina", "Qatar"}):   "Lumen Field, Seattle, WA",
+    frozenset({"Canada", "Bosnia and Herzegovina"}):          "BMO Field, Toronto, Canada",
+    frozenset({"Canada", "Bosnia & Herzegovina"}):            "BMO Field, Toronto, Canada",
+    frozenset({"Qatar", "Switzerland"}):                      "Levi's Stadium, Santa Clara, CA",
+    frozenset({"Switzerland", "Bosnia and Herzegovina"}):     "SoFi Stadium, Inglewood, CA",
+    frozenset({"Switzerland", "Bosnia & Herzegovina"}):       "SoFi Stadium, Inglewood, CA",
+    frozenset({"Canada", "Qatar"}):                           "BC Place, Vancouver, Canada",
+    frozenset({"Switzerland", "Canada"}):                     "BC Place, Vancouver, Canada",
+    frozenset({"Bosnia and Herzegovina", "Qatar"}):           "Lumen Field, Seattle, WA",
+    frozenset({"Bosnia & Herzegovina", "Qatar"}):             "Lumen Field, Seattle, WA",
     # Group C
-    frozenset({"Haiti", "Scotland"}):                 "Gillette Stadium, Foxborough, MA",
-    frozenset({"Scotland", "Morocco"}):               "Gillette Stadium, Foxborough, MA",
-    frozenset({"Brazil", "Haiti"}):                   "Lincoln Financial Field, Philadelphia, PA",
-    frozenset({"Scotland", "Brazil"}):                "Hard Rock Stadium, Miami Gardens, FL",
-    frozenset({"Morocco", "Haiti"}):                  "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Brazil", "Morocco"}):                         "MetLife Stadium, East Rutherford, NJ",
+    frozenset({"Haiti", "Scotland"}):                         "Gillette Stadium, Foxborough, MA",
+    frozenset({"Scotland", "Morocco"}):                       "Gillette Stadium, Foxborough, MA",
+    frozenset({"Brazil", "Haiti"}):                           "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"Scotland", "Brazil"}):                        "Hard Rock Stadium, Miami Gardens, FL",
+    frozenset({"Morocco", "Haiti"}):                          "Mercedes-Benz Stadium, Atlanta, GA",
     # Group D
-    frozenset({"United States", "Australia"}):        "Lumen Field, Seattle, WA",
-    frozenset({"Türkiye", "Paraguay"}):               "Levi's Stadium, Santa Clara, CA",
-    frozenset({"Turkey", "Paraguay"}):                "Levi's Stadium, Santa Clara, CA",
-    frozenset({"Türkiye", "United States"}):          "SoFi Stadium, Inglewood, CA",
-    frozenset({"Turkey", "United States"}):           "SoFi Stadium, Inglewood, CA",
-    frozenset({"Paraguay", "Australia"}):             "Levi's Stadium, Santa Clara, CA",
+    frozenset({"United States", "Paraguay"}):                 "SoFi Stadium, Inglewood, CA",
+    frozenset({"Australia", "Türkiye"}):                      "BC Place, Vancouver, Canada",
+    frozenset({"Australia", "Turkey"}):                       "BC Place, Vancouver, Canada",
+    frozenset({"United States", "Australia"}):                "Lumen Field, Seattle, WA",
+    frozenset({"Türkiye", "Paraguay"}):                       "Levi's Stadium, Santa Clara, CA",
+    frozenset({"Turkey", "Paraguay"}):                        "Levi's Stadium, Santa Clara, CA",
+    frozenset({"Türkiye", "United States"}):                  "SoFi Stadium, Inglewood, CA",
+    frozenset({"Turkey", "United States"}):                   "SoFi Stadium, Inglewood, CA",
+    frozenset({"Paraguay", "Australia"}):                     "Levi's Stadium, Santa Clara, CA",
     # Group E
-    frozenset({"Germany", "Côte d'Ivoire"}):          "BMO Field, Toronto, Canada",
-    frozenset({"Germany", "Ivory Coast"}):            "BMO Field, Toronto, Canada",
-    frozenset({"Ecuador", "Curaçao"}):                "Arrowhead Stadium, Kansas City, MO",
-    frozenset({"Ecuador", "Curacao"}):                "Arrowhead Stadium, Kansas City, MO",
-    frozenset({"Ecuador", "Germany"}):                "MetLife Stadium, East Rutherford, NJ",
-    frozenset({"Curaçao", "Côte d'Ivoire"}):          "Lincoln Financial Field, Philadelphia, PA",
-    frozenset({"Curacao", "Ivory Coast"}):            "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"Germany", "Curaçao"}):                        "NRG Stadium, Houston, TX",
+    frozenset({"Germany", "Curacao"}):                        "NRG Stadium, Houston, TX",
+    frozenset({"Côte d'Ivoire", "Ecuador"}):                  "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"Ivory Coast", "Ecuador"}):                    "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"Germany", "Côte d'Ivoire"}):                  "BMO Field, Toronto, Canada",
+    frozenset({"Germany", "Ivory Coast"}):                    "BMO Field, Toronto, Canada",
+    frozenset({"Ecuador", "Curaçao"}):                        "GEHA Field at Arrowhead, Kansas City, MO",
+    frozenset({"Ecuador", "Curacao"}):                        "GEHA Field at Arrowhead, Kansas City, MO",
+    frozenset({"Ecuador", "Germany"}):                        "MetLife Stadium, East Rutherford, NJ",
+    frozenset({"Curaçao", "Côte d'Ivoire"}):                  "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"Curacao", "Ivory Coast"}):                    "Lincoln Financial Field, Philadelphia, PA",
     # Group F
-    frozenset({"Netherlands", "Sweden"}):             "NRG Stadium, Houston, TX",
-    frozenset({"Tunisia", "Japan"}):                  "Estadio BBVA, Monterrey, Mexico",
-    frozenset({"Japan", "Sweden"}):                   "AT&T Stadium, Arlington, TX",
-    frozenset({"Tunisia", "Netherlands"}):            "Arrowhead Stadium, Kansas City, MO",
+    frozenset({"Netherlands", "Japan"}):                      "AT&T Stadium, Arlington, TX",
+    frozenset({"Sweden", "Tunisia"}):                         "Estadio BBVA, Monterrey, Mexico",
+    frozenset({"Netherlands", "Sweden"}):                     "NRG Stadium, Houston, TX",
+    frozenset({"Tunisia", "Japan"}):                          "Estadio BBVA, Monterrey, Mexico",
+    frozenset({"Japan", "Sweden"}):                           "AT&T Stadium, Arlington, TX",
+    frozenset({"Tunisia", "Netherlands"}):                    "GEHA Field at Arrowhead, Kansas City, MO",
     # Group G
-    frozenset({"Belgium", "Iran"}):                   "SoFi Stadium, Inglewood, CA",
-    frozenset({"New Zealand", "Egypt"}):              "BC Place, Vancouver, Canada",
-    frozenset({"Egypt", "Iran"}):                     "Lumen Field, Seattle, WA",
-    frozenset({"New Zealand", "Belgium"}):            "BC Place, Vancouver, Canada",
+    frozenset({"Iran", "New Zealand"}):                       "SoFi Stadium, Inglewood, CA",
+    frozenset({"Belgium", "Egypt"}):                          "Lumen Field, Seattle, WA",
+    frozenset({"Belgium", "Iran"}):                           "SoFi Stadium, Inglewood, CA",
+    frozenset({"New Zealand", "Egypt"}):                      "BC Place, Vancouver, Canada",
+    frozenset({"Egypt", "Iran"}):                             "Lumen Field, Seattle, WA",
+    frozenset({"New Zealand", "Belgium"}):                    "BC Place, Vancouver, Canada",
     # Group H
-    frozenset({"Spain", "Saudi Arabia"}):             "Mercedes-Benz Stadium, Atlanta, GA",
-    frozenset({"Uruguay", "Cabo Verde"}):             "Hard Rock Stadium, Miami Gardens, FL",
-    frozenset({"Uruguay", "Cape Verde"}):             "Hard Rock Stadium, Miami Gardens, FL",
-    frozenset({"Cabo Verde", "Saudi Arabia"}):        "NRG Stadium, Houston, TX",
-    frozenset({"Cape Verde", "Saudi Arabia"}):        "NRG Stadium, Houston, TX",
-    frozenset({"Uruguay", "Spain"}):                  "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"Spain", "Cabo Verde"}):                       "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Spain", "Cape Verde"}):                       "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Saudi Arabia", "Uruguay"}):                   "Hard Rock Stadium, Miami Gardens, FL",
+    frozenset({"Spain", "Saudi Arabia"}):                     "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Uruguay", "Cabo Verde"}):                     "Hard Rock Stadium, Miami Gardens, FL",
+    frozenset({"Uruguay", "Cape Verde"}):                     "Hard Rock Stadium, Miami Gardens, FL",
+    frozenset({"Cabo Verde", "Saudi Arabia"}):                "NRG Stadium, Houston, TX",
+    frozenset({"Cape Verde", "Saudi Arabia"}):                "NRG Stadium, Houston, TX",
+    frozenset({"Uruguay", "Spain"}):                          "Estadio Akron, Guadalajara, Mexico",
     # Group I
-    frozenset({"France", "Iraq"}):                    "Lincoln Financial Field, Philadelphia, PA",
-    frozenset({"Norway", "Senegal"}):                 "MetLife Stadium, East Rutherford, NJ",
-    frozenset({"Norway", "France"}):                  "Gillette Stadium, Foxborough, MA",
-    frozenset({"Senegal", "Iraq"}):                   "BMO Field, Toronto, Canada",
+    frozenset({"France", "Senegal"}):                         "MetLife Stadium, East Rutherford, NJ",
+    frozenset({"Iraq", "Norway"}):                            "Gillette Stadium, Foxborough, MA",
+    frozenset({"France", "Iraq"}):                            "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"Norway", "Senegal"}):                         "MetLife Stadium, East Rutherford, NJ",
+    frozenset({"Norway", "France"}):                          "Gillette Stadium, Foxborough, MA",
+    frozenset({"Senegal", "Iraq"}):                           "BMO Field, Toronto, Canada",
     # Group J
-    frozenset({"Argentina", "Austria"}):              "AT&T Stadium, Arlington, TX",
-    frozenset({"Jordan", "Algeria"}):                 "Levi's Stadium, Santa Clara, CA",
-    frozenset({"Algeria", "Austria"}):                "Arrowhead Stadium, Kansas City, MO",
-    frozenset({"Jordan", "Argentina"}):               "AT&T Stadium, Arlington, TX",
+    frozenset({"Argentina", "Algeria"}):                      "GEHA Field at Arrowhead, Kansas City, MO",
+    frozenset({"Austria", "Jordan"}):                         "Levi's Stadium, Santa Clara, CA",
+    frozenset({"Argentina", "Austria"}):                      "AT&T Stadium, Arlington, TX",
+    frozenset({"Jordan", "Algeria"}):                         "Levi's Stadium, Santa Clara, CA",
+    frozenset({"Algeria", "Austria"}):                        "GEHA Field at Arrowhead, Kansas City, MO",
+    frozenset({"Jordan", "Argentina"}):                       "AT&T Stadium, Arlington, TX",
     # Group K
-    frozenset({"Uzbekistan", "Colombia"}):            "Estadio Azteca, Mexico City, Mexico",
-    frozenset({"Portugal", "Uzbekistan"}):            "NRG Stadium, Houston, TX",
-    frozenset({"Colombia", "DR Congo"}):              "Estadio Akron, Guadalajara, Mexico",
-    frozenset({"Colombia", "Portugal"}):              "Hard Rock Stadium, Miami Gardens, FL",
-    frozenset({"DR Congo", "Uzbekistan"}):            "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Portugal", "DR Congo"}):                      "NRG Stadium, Houston, TX",
+    frozenset({"Uzbekistan", "Colombia"}):                    "Estadio Azteca, Mexico City, Mexico",
+    frozenset({"Portugal", "Uzbekistan"}):                    "NRG Stadium, Houston, TX",
+    frozenset({"Colombia", "DR Congo"}):                      "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"Colombia", "Portugal"}):                      "Hard Rock Stadium, Miami Gardens, FL",
+    frozenset({"DR Congo", "Uzbekistan"}):                    "Mercedes-Benz Stadium, Atlanta, GA",
     # Group L
-    frozenset({"England", "Croatia"}):                "AT&T Stadium, Arlington, TX",
-    frozenset({"Ghana", "Panama"}):                   "BMO Field, Toronto, Canada",
-    frozenset({"England", "Ghana"}):                  "Gillette Stadium, Foxborough, MA",
-    frozenset({"Panama", "Croatia"}):                 "BMO Field, Toronto, Canada",
-    frozenset({"Panama", "England"}):                 "MetLife Stadium, East Rutherford, NJ",
-    frozenset({"Croatia", "Ghana"}):                  "Lincoln Financial Field, Philadelphia, PA",
+    frozenset({"England", "Croatia"}):                        "AT&T Stadium, Arlington, TX",
+    frozenset({"Ghana", "Panama"}):                           "BMO Field, Toronto, Canada",
+    frozenset({"England", "Ghana"}):                          "Gillette Stadium, Foxborough, MA",
+    frozenset({"Panama", "Croatia"}):                         "BMO Field, Toronto, Canada",
+    frozenset({"Panama", "England"}):                         "MetLife Stadium, East Rutherford, NJ",
+    frozenset({"Croatia", "Ghana"}):                          "Lincoln Financial Field, Philadelphia, PA",
 }
 
 def _lookup_venue(match):
-    home = match["homeTeam"]["name"]
-    away = match["awayTeam"]["name"]
+    home = (match.get("homeTeam") or {}).get("name") or ""
+    away = (match.get("awayTeam") or {}).get("name") or ""
+    if not home or not away:
+        return ""
     return _V.get(frozenset({home, away}), "")
 
 # ── Flag map ──────────────────────────────────────────────────────────────────
@@ -150,8 +178,8 @@ def fetch(path):
         return json.loads(r.read())
 
 def build_summary(match):
-    home   = match["homeTeam"]["name"]
-    away   = match["awayTeam"]["name"]
+    home   = (match.get("homeTeam") or {}).get("name") or "TBD"
+    away   = (match.get("awayTeam") or {}).get("name") or "TBD"
     status = match["status"]
     score  = match.get("score", {})
     ft     = score.get("fullTime", {})
@@ -169,6 +197,8 @@ def build_summary(match):
         return f"⚽️ {team_str(home)} vs {team_str(away)}"
 
 def build_description(match):
+    home   = (match.get("homeTeam") or {}).get("name") or "TBD"
+    away   = (match.get("awayTeam") or {}).get("name") or "TBD"
     stage  = match.get("stage", "").replace("_", " ").title()
     group  = match.get("group", "")
     venue  = match.get("venue", "") or _lookup_venue(match)
