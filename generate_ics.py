@@ -28,20 +28,26 @@ _V = {
     # Group A
     frozenset({"Mexico", "South Africa"}):                    "Estadio Azteca, Mexico City, Mexico",
     frozenset({"Korea Republic", "Czechia"}):                 "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"South Korea", "Czechia"}):                    "Estadio Akron, Guadalajara, Mexico",
     frozenset({"Czechia", "South Africa"}):                   "Mercedes-Benz Stadium, Atlanta, GA",
     frozenset({"Mexico", "Korea Republic"}):                  "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"Mexico", "South Korea"}):                     "Estadio Akron, Guadalajara, Mexico",
     frozenset({"Czechia", "Mexico"}):                         "Estadio Azteca, Mexico City, Mexico",
     frozenset({"South Africa", "Korea Republic"}):            "Estadio BBVA, Monterrey, Mexico",
+    frozenset({"South Africa", "South Korea"}):               "Estadio BBVA, Monterrey, Mexico",
     # Group B
     frozenset({"Canada", "Bosnia and Herzegovina"}):          "BMO Field, Toronto, Canada",
     frozenset({"Canada", "Bosnia & Herzegovina"}):            "BMO Field, Toronto, Canada",
+    frozenset({"Canada", "Bosnia-Herzegovina"}):              "BMO Field, Toronto, Canada",
     frozenset({"Qatar", "Switzerland"}):                      "Levi's Stadium, Santa Clara, CA",
     frozenset({"Switzerland", "Bosnia and Herzegovina"}):     "SoFi Stadium, Inglewood, CA",
     frozenset({"Switzerland", "Bosnia & Herzegovina"}):       "SoFi Stadium, Inglewood, CA",
+    frozenset({"Switzerland", "Bosnia-Herzegovina"}):         "SoFi Stadium, Inglewood, CA",
     frozenset({"Canada", "Qatar"}):                           "BC Place, Vancouver, Canada",
     frozenset({"Switzerland", "Canada"}):                     "BC Place, Vancouver, Canada",
     frozenset({"Bosnia and Herzegovina", "Qatar"}):           "Lumen Field, Seattle, WA",
     frozenset({"Bosnia & Herzegovina", "Qatar"}):             "Lumen Field, Seattle, WA",
+    frozenset({"Bosnia-Herzegovina", "Qatar"}):               "Lumen Field, Seattle, WA",
     # Group C
     frozenset({"Brazil", "Morocco"}):                         "MetLife Stadium, East Rutherford, NJ",
     frozenset({"Haiti", "Scotland"}):                         "Gillette Stadium, Foxborough, MA",
@@ -88,12 +94,15 @@ _V = {
     # Group H
     frozenset({"Spain", "Cabo Verde"}):                       "Mercedes-Benz Stadium, Atlanta, GA",
     frozenset({"Spain", "Cape Verde"}):                       "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Spain", "Cape Verde Islands"}):               "Mercedes-Benz Stadium, Atlanta, GA",
     frozenset({"Saudi Arabia", "Uruguay"}):                   "Hard Rock Stadium, Miami Gardens, FL",
     frozenset({"Spain", "Saudi Arabia"}):                     "Mercedes-Benz Stadium, Atlanta, GA",
     frozenset({"Uruguay", "Cabo Verde"}):                     "Hard Rock Stadium, Miami Gardens, FL",
     frozenset({"Uruguay", "Cape Verde"}):                     "Hard Rock Stadium, Miami Gardens, FL",
+    frozenset({"Uruguay", "Cape Verde Islands"}):             "Hard Rock Stadium, Miami Gardens, FL",
     frozenset({"Cabo Verde", "Saudi Arabia"}):                "NRG Stadium, Houston, TX",
     frozenset({"Cape Verde", "Saudi Arabia"}):                "NRG Stadium, Houston, TX",
+    frozenset({"Cape Verde Islands", "Saudi Arabia"}):        "NRG Stadium, Houston, TX",
     frozenset({"Uruguay", "Spain"}):                          "Estadio Akron, Guadalajara, Mexico",
     # Group I
     frozenset({"France", "Senegal"}):                         "MetLife Stadium, East Rutherford, NJ",
@@ -111,11 +120,14 @@ _V = {
     frozenset({"Jordan", "Argentina"}):                       "AT&T Stadium, Arlington, TX",
     # Group K
     frozenset({"Portugal", "DR Congo"}):                      "NRG Stadium, Houston, TX",
+    frozenset({"Portugal", "Congo DR"}):                      "NRG Stadium, Houston, TX",
     frozenset({"Uzbekistan", "Colombia"}):                    "Estadio Azteca, Mexico City, Mexico",
     frozenset({"Portugal", "Uzbekistan"}):                    "NRG Stadium, Houston, TX",
     frozenset({"Colombia", "DR Congo"}):                      "Estadio Akron, Guadalajara, Mexico",
+    frozenset({"Colombia", "Congo DR"}):                      "Estadio Akron, Guadalajara, Mexico",
     frozenset({"Colombia", "Portugal"}):                      "Hard Rock Stadium, Miami Gardens, FL",
     frozenset({"DR Congo", "Uzbekistan"}):                    "Mercedes-Benz Stadium, Atlanta, GA",
+    frozenset({"Congo DR", "Uzbekistan"}):                    "Mercedes-Benz Stadium, Atlanta, GA",
     # Group L
     frozenset({"England", "Croatia"}):                        "AT&T Stadium, Arlington, TX",
     frozenset({"Ghana", "Panama"}):                           "BMO Field, Toronto, Canada",
@@ -125,12 +137,32 @@ _V = {
     frozenset({"Croatia", "Ghana"}):                          "Lincoln Financial Field, Philadelphia, PA",
 }
 
+import re as _re, unicodedata as _ud
+def _norm(name):
+    """Normalize team name for fuzzy matching."""
+    # decompose unicode (ü→u+combining) then strip combining chars
+    name = _ud.normalize("NFKD", name)
+    name = "".join(c for c in name if _ud.category(c) != "Mn")
+    name = name.lower()
+    name = _re.sub(r"[^a-z]", "", name)  # strip non-alpha
+    for src, dst in [("korearepublic","southkorea"),("cotedivoire","ivorycoast"),
+                     ("democraticrepublicofcongo","drcongo"),("congord","drcongo"),("congodr","drcongo"),
+                     ("capeverdeislands","capeverde"),("caboverde","capeverde"),
+                     ("bosniaandherzegovina","bosniaherzegovina"),
+                     ("bosnia","bosniaherzegovina"),("turkiye","turkey"),
+                     ("unitedstates","usa"),]:
+        name = name.replace(src, dst)
+    return name
+
+_V_NORM = {frozenset({_norm(a), _norm(b)}): v for fs, v in _V.items() for a, b in [list(fs)]}
+
 def _lookup_venue(match):
     home = (match.get("homeTeam") or {}).get("name") or ""
     away = (match.get("awayTeam") or {}).get("name") or ""
     if not home or not away:
         return ""
-    return _V.get(frozenset({home, away}), "")
+    key = frozenset({_norm(home), _norm(away)})
+    return _V_NORM.get(key, "")
 
 # ── Flag map ──────────────────────────────────────────────────────────────────
 FLAGS = {
