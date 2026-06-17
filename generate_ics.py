@@ -162,9 +162,8 @@ def build_summary(match):
     if status == "FINISHED" and h_g is not None:
         return f"{emoji} {team_str(home)} {h_g}–{a_g} {team_str(away)}"
     elif status in ("IN_PLAY", "PAUSED"):
-        curr = score.get("halfTime", ft)
-        hg   = curr.get("home", "?")
-        ag   = curr.get("away", "?")
+        hg = ft.get("home") if ft.get("home") is not None else "?"
+        ag = ft.get("away") if ft.get("away") is not None else "?"
         return f"{emoji} {team_str(home)} {hg}–{ag} {team_str(away)} LIVE"
     else:
         return f"⚽️ {team_str(home)} vs {team_str(away)}"
