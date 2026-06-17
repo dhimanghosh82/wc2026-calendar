@@ -171,11 +171,19 @@ def flag(name):
 def team_str(name):
     return f"{flag(name)} {name}"
 
-def fetch(path):
+def fetch(path, retries=3):
+    import time
     url = f"{API_BASE}{path}"
-    req = urllib.request.Request(url, headers={"X-Auth-Token": API_KEY})
-    with urllib.request.urlopen(req, timeout=15) as r:
-        return json.loads(r.read())
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers={"X-Auth-Token": API_KEY})
+            with urllib.request.urlopen(req, timeout=15) as r:
+                return json.loads(r.read())
+        except Exception as e:
+            if attempt == retries - 1:
+                raise
+            print(f"⚠️  Attempt {attempt + 1} failed ({e}), retrying...")
+            time.sleep(3)
 
 def build_summary(match):
     home   = (match.get("homeTeam") or {}).get("name") or "TBD"
