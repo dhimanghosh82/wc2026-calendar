@@ -160,12 +160,12 @@ _V_NORM = {frozenset({_norm(a), _norm(b)}): v for fs, v in _V.items() for a, b i
 # Key = football-data.org match ID (int)
 # short = compact bracket label shown when teams are TBD (e.g. "1C vs 2F")
 # full  = verbose bracket description for the DESCRIPTION field
-# ph/pa = predicted home/away team based on MD2 group standings (June 23 2026)
+# ph/pa = predicted home/away team based on live group standings (kingdoggydog.github.io/worldcup2026, June 25 2026)
 _KNOCKOUT = {
     # Round of 32 ── M73-M88
     537417: {"venue": "SoFi Stadium, Inglewood, CA",
               "short": "2A vs 2B", "full": "Runner-up Group A vs Runner-up Group B",
-              "ph": "South Korea", "pa": "Switzerland"},
+              "ph": "South Africa", "pa": "Canada"},
     537415: {"venue": "Gillette Stadium, Foxborough, MA",
               "short": "1E vs 3rd(A/B/C/D/F)", "full": "Winner Group E vs Best 3rd Place (A/B/C/D/F)",
               "ph": "Germany", "pa": None},
@@ -201,7 +201,7 @@ _KNOCKOUT = {
               "ph": "Portugal", "pa": "Ghana"},
     537429: {"venue": "BC Place, Vancouver, Canada",
               "short": "1B vs 3rd(E/F/G/I/J)", "full": "Winner Group B vs Best 3rd Place (E/F/G/I/J)",
-              "ph": "Canada", "pa": None},
+              "ph": "Switzerland", "pa": None},
     537428: {"venue": "AT&T Stadium, Arlington, TX",
               "short": "2D vs 2G", "full": "Runner-up Group D vs Runner-up Group G",
               "ph": "Australia", "pa": "Belgium"},
