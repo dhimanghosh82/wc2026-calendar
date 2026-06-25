@@ -156,7 +156,121 @@ def _norm(name):
 
 _V_NORM = {frozenset({_norm(a), _norm(b)}): v for fs, v in _V.items() for a, b in [list(fs)]}
 
+# ── Knockout stage metadata ───────────────────────────────────────────────────
+# Key = football-data.org match ID (int)
+# short = compact bracket label shown when teams are TBD (e.g. "1C vs 2F")
+# full  = verbose bracket description for the DESCRIPTION field
+# ph/pa = predicted home/away team based on MD2 group standings (June 23 2026)
+_KNOCKOUT = {
+    # Round of 32 ── M73-M88
+    537417: {"venue": "SoFi Stadium, Inglewood, CA",
+              "short": "2A vs 2B", "full": "Runner-up Group A vs Runner-up Group B",
+              "ph": "South Korea", "pa": "Switzerland"},
+    537415: {"venue": "Gillette Stadium, Foxborough, MA",
+              "short": "1E vs 3rd(A/B/C/D/F)", "full": "Winner Group E vs Best 3rd Place (A/B/C/D/F)",
+              "ph": "Germany", "pa": None},
+    537418: {"venue": "Estadio BBVA, Monterrey, Mexico",
+              "short": "1F vs 2C", "full": "Winner Group F vs Runner-up Group C",
+              "ph": "Netherlands", "pa": "Morocco"},
+    537423: {"venue": "NRG Stadium, Houston, TX",
+              "short": "1C vs 2F", "full": "Winner Group C vs Runner-up Group F",
+              "ph": "Brazil", "pa": "Japan"},
+    537416: {"venue": "MetLife Stadium, East Rutherford, NJ",
+              "short": "1I vs 3rd(C/D/F/G/H)", "full": "Winner Group I vs Best 3rd Place (C/D/F/G/H)",
+              "ph": "France", "pa": None},
+    537424: {"venue": "AT&T Stadium, Arlington, TX",
+              "short": "2E vs 2I", "full": "Runner-up Group E vs Runner-up Group I",
+              "ph": "Ivory Coast", "pa": "Norway"},
+    537425: {"venue": "Estadio Azteca, Mexico City, Mexico",
+              "short": "1A vs 3rd(C/E/F/H/I)", "full": "Winner Group A vs Best 3rd Place (C/E/F/H/I)",
+              "ph": "Mexico", "pa": None},
+    537426: {"venue": "Mercedes-Benz Stadium, Atlanta, GA",
+              "short": "1L vs 3rd(E/H/I/J/K)", "full": "Winner Group L vs Best 3rd Place (E/H/I/J/K)",
+              "ph": "England", "pa": None},
+    537422: {"venue": "Lumen Field, Seattle, WA",
+              "short": "1G vs 3rd(A/E/H/I/J)", "full": "Winner Group G vs Best 3rd Place (A/E/H/I/J)",
+              "ph": "Egypt", "pa": None},
+    537421: {"venue": "Levi's Stadium, Santa Clara, CA",
+              "short": "1D vs 3rd(B/E/F/I/J)", "full": "Winner Group D vs Best 3rd Place (B/E/F/I/J)",
+              "ph": "United States", "pa": None},
+    537420: {"venue": "SoFi Stadium, Inglewood, CA",
+              "short": "1H vs 2J", "full": "Winner Group H vs Runner-up Group J",
+              "ph": "Spain", "pa": "Algeria"},
+    537419: {"venue": "BMO Field, Toronto, Canada",
+              "short": "2K vs 2L", "full": "Runner-up Group K vs Runner-up Group L",
+              "ph": "Portugal", "pa": "Ghana"},
+    537429: {"venue": "BC Place, Vancouver, Canada",
+              "short": "1B vs 3rd(E/F/G/I/J)", "full": "Winner Group B vs Best 3rd Place (E/F/G/I/J)",
+              "ph": "Canada", "pa": None},
+    537428: {"venue": "AT&T Stadium, Arlington, TX",
+              "short": "2D vs 2G", "full": "Runner-up Group D vs Runner-up Group G",
+              "ph": "Australia", "pa": "Belgium"},
+    537427: {"venue": "Hard Rock Stadium, Miami Gardens, FL",
+              "short": "1J vs 2H", "full": "Winner Group J vs Runner-up Group H",
+              "ph": "Argentina", "pa": "Cape Verde"},
+    537430: {"venue": "GEHA Field at Arrowhead, Kansas City, MO",
+              "short": "1K vs 3rd(D/E/I/J/L)", "full": "Winner Group K vs Best 3rd Place (D/E/I/J/L)",
+              "ph": "Colombia", "pa": None},
+    # Round of 16 ── M89-M96
+    537376: {"venue": "NRG Stadium, Houston, TX",
+              "short": "W73 vs W75", "full": "Winner Match 73 vs Winner Match 75",
+              "ph": None, "pa": None},
+    537375: {"venue": "Lincoln Financial Field, Philadelphia, PA",
+              "short": "W74 vs W77", "full": "Winner Match 74 vs Winner Match 77",
+              "ph": None, "pa": None},
+    537377: {"venue": "MetLife Stadium, East Rutherford, NJ",
+              "short": "W76 vs W78", "full": "Winner Match 76 vs Winner Match 78",
+              "ph": None, "pa": None},
+    537378: {"venue": "Estadio Azteca, Mexico City, Mexico",
+              "short": "W79 vs W80", "full": "Winner Match 79 vs Winner Match 80",
+              "ph": None, "pa": None},
+    537379: {"venue": "AT&T Stadium, Arlington, TX",
+              "short": "W81 vs W82", "full": "Winner Match 81 vs Winner Match 82",
+              "ph": None, "pa": None},
+    537380: {"venue": "Lumen Field, Seattle, WA",
+              "short": "W83 vs W84", "full": "Winner Match 83 vs Winner Match 84",
+              "ph": None, "pa": None},
+    537381: {"venue": "Mercedes-Benz Stadium, Atlanta, GA",
+              "short": "W85 vs W86", "full": "Winner Match 85 vs Winner Match 86",
+              "ph": None, "pa": None},
+    537382: {"venue": "BC Place, Vancouver, Canada",
+              "short": "W87 vs W88", "full": "Winner Match 87 vs Winner Match 88",
+              "ph": None, "pa": None},
+    # Quarterfinals ── M97-M100
+    537383: {"venue": "Gillette Stadium, Foxborough, MA",
+              "short": "W89 vs W90", "full": "Winner Match 89 vs Winner Match 90",
+              "ph": None, "pa": None},
+    537384: {"venue": "SoFi Stadium, Inglewood, CA",
+              "short": "W93 vs W94", "full": "Winner Match 93 vs Winner Match 94",
+              "ph": None, "pa": None},
+    537385: {"venue": "Hard Rock Stadium, Miami Gardens, FL",
+              "short": "W91 vs W92", "full": "Winner Match 91 vs Winner Match 92",
+              "ph": None, "pa": None},
+    537386: {"venue": "GEHA Field at Arrowhead, Kansas City, MO",
+              "short": "W95 vs W96", "full": "Winner Match 95 vs Winner Match 96",
+              "ph": None, "pa": None},
+    # Semifinals ── M101-M102
+    537387: {"venue": "AT&T Stadium, Arlington, TX",
+              "short": "W97 vs W98", "full": "Winner Match 97 vs Winner Match 98",
+              "ph": None, "pa": None},
+    537388: {"venue": "Mercedes-Benz Stadium, Atlanta, GA",
+              "short": "W99 vs W100", "full": "Winner Match 99 vs Winner Match 100",
+              "ph": None, "pa": None},
+    # Third Place Play-off ── M103
+    537389: {"venue": "Hard Rock Stadium, Miami Gardens, FL",
+              "short": "L101 vs L102", "full": "Loser Match 101 vs Loser Match 102",
+              "ph": None, "pa": None},
+    # Final ── M104
+    537390: {"venue": "MetLife Stadium, East Rutherford, NJ",
+              "short": "W101 vs W102", "full": "Winner Match 101 vs Winner Match 102",
+              "ph": None, "pa": None},
+}
+
 def _lookup_venue(match):
+    # Knockout metadata has venue for every non-group match (API omits it)
+    ko = _KNOCKOUT.get(match.get("id"))
+    if ko:
+        return ko["venue"]
     home = (match.get("homeTeam") or {}).get("name") or ""
     away = (match.get("awayTeam") or {}).get("name") or ""
     if not home or not away:
@@ -166,7 +280,7 @@ def _lookup_venue(match):
 
 # ── Flag map ──────────────────────────────────────────────────────────────────
 FLAGS = {
-    "Mexico": "🇲🇽", "South Africa": "🇿🇦", "Korea Republic": "🇰🇷",
+    "Mexico": "🇲🇽", "South Africa": "🇿🇦", "Korea Republic": "🇰🇷", "South Korea": "🇰🇷",
     "Czechia": "🇨🇿", "Canada": "🇨🇦", "Bosnia and Herzegovina": "🇧🇦",
     "Bosnia & Herzegovina": "🇧🇦", "United States": "🇺🇸", "USA": "🇺🇸",
     "Paraguay": "🇵🇾", "Qatar": "🇶🇦", "Switzerland": "🇨🇭",
@@ -217,6 +331,14 @@ def fetch(path, retries=3):
             print(f"⚠️  Attempt {attempt + 1} failed ({e}), retrying...")
             time.sleep(3)
 
+def _ko_slot(real_name, pred, bracket_label):
+    """Display string for one team slot: real API name > prediction > bracket label."""
+    if real_name and real_name != "TBD":
+        return team_str(real_name)
+    if pred:
+        return f"{flag(pred)} {pred}"
+    return f"🏆 {bracket_label}"
+
 def build_summary(match):
     home   = (match.get("homeTeam") or {}).get("name") or "TBD"
     away   = (match.get("awayTeam") or {}).get("name") or "TBD"
@@ -233,8 +355,16 @@ def build_summary(match):
         hg = ft.get("home") if ft.get("home") is not None else "?"
         ag = ft.get("away") if ft.get("away") is not None else "?"
         return f"{emoji} {team_str(home)} {hg}–{ag} {team_str(away)} LIVE"
-    else:
-        return f"⚽️ {team_str(home)} vs {team_str(away)}"
+
+    ko = _KNOCKOUT.get(match.get("id"))
+    if ko and (home == "TBD" or away == "TBD"):
+        parts = ko["short"].split(" vs ", 1)
+        h_label, a_label = parts[0], (parts[1] if len(parts) > 1 else "")
+        hd = _ko_slot(home if home != "TBD" else "", ko.get("ph"), h_label)
+        ad = _ko_slot(away if away != "TBD" else "", ko.get("pa"), a_label)
+        return f"⚽️ {hd} vs {ad}"
+
+    return f"⚽️ {team_str(home)} vs {team_str(away)}"
 
 def build_description(match):
     home   = (match.get("homeTeam") or {}).get("name") or "TBD"
@@ -249,6 +379,13 @@ def build_description(match):
     if venue:
         lines.append(f"Venue: {venue}")
     lines.append(f"Status: {status}")
+    ko = _KNOCKOUT.get(match.get("id"))
+    if ko:
+        lines.append(f"Bracket: {ko['full']}")
+        if ko.get("ph") or ko.get("pa"):
+            ph = ko.get("ph") or "TBD"
+            pa = ko.get("pa") or "TBD"
+            lines.append(f"Predicted: {ph} vs {pa}")
     score = match.get("score", {})
     ft    = score.get("fullTime", {})
     if ft.get("home") is not None:
