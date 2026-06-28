@@ -160,9 +160,10 @@ _V_NORM = {frozenset({_norm(a), _norm(b)}): v for fs, v in _V.items() for a, b i
 # Key = football-data.org match ID (int)
 # short = compact bracket label shown when teams are TBD (e.g. "1C vs 2F")
 # full  = verbose bracket description for the DESCRIPTION field
-# ph/pa = home/away team. Group winners & runners-up are FINAL (all 12 groups complete,
-#         kingdoggydog.github.io/worldcup2026 group-winners.json, June 28 2026).
-#         Best-third-place slots remain TBD (ph/pa = None) — shown as bracket labels.
+# ph/pa = home/away team. All 16 R32 matchups are FINAL — group winners,
+#         runners-up, and the 8 best-third-place assignments are confirmed
+#         (group stage complete, June 28 2026). Sources: kingdoggydog.github.io
+#         group-winners.json + published R32 bracket (Sky Sports / Yahoo / CBS).
 _KNOCKOUT = {
     # Round of 32 ── M73-M88
     537417: {"venue": "SoFi Stadium, Inglewood, CA",
@@ -170,7 +171,7 @@ _KNOCKOUT = {
               "ph": "South Africa", "pa": "Canada"},
     537415: {"venue": "Gillette Stadium, Foxborough, MA",
               "short": "1E vs 3rd(A/B/C/D/F)", "full": "Winner Group E vs Best 3rd Place (A/B/C/D/F)",
-              "ph": "Germany", "pa": None},
+              "ph": "Germany", "pa": "Paraguay"},
     537418: {"venue": "Estadio BBVA, Monterrey, Mexico",
               "short": "1F vs 2C", "full": "Winner Group F vs Runner-up Group C",
               "ph": "Netherlands", "pa": "Morocco"},
@@ -179,22 +180,22 @@ _KNOCKOUT = {
               "ph": "Brazil", "pa": "Japan"},
     537416: {"venue": "MetLife Stadium, East Rutherford, NJ",
               "short": "1I vs 3rd(C/D/F/G/H)", "full": "Winner Group I vs Best 3rd Place (C/D/F/G/H)",
-              "ph": "France", "pa": None},
+              "ph": "France", "pa": "Sweden"},
     537424: {"venue": "AT&T Stadium, Arlington, TX",
               "short": "2E vs 2I", "full": "Runner-up Group E vs Runner-up Group I",
               "ph": "Ivory Coast", "pa": "Norway"},
     537425: {"venue": "Estadio Azteca, Mexico City, Mexico",
               "short": "1A vs 3rd(C/E/F/H/I)", "full": "Winner Group A vs Best 3rd Place (C/E/F/H/I)",
-              "ph": "Mexico", "pa": None},
+              "ph": "Mexico", "pa": "Ecuador"},
     537426: {"venue": "Mercedes-Benz Stadium, Atlanta, GA",
               "short": "1L vs 3rd(E/H/I/J/K)", "full": "Winner Group L vs Best 3rd Place (E/H/I/J/K)",
-              "ph": "England", "pa": None},
+              "ph": "England", "pa": "DR Congo"},
     537422: {"venue": "Lumen Field, Seattle, WA",
               "short": "1G vs 3rd(A/E/H/I/J)", "full": "Winner Group G vs Best 3rd Place (A/E/H/I/J)",
-              "ph": "Belgium", "pa": None},
+              "ph": "Belgium", "pa": "Senegal"},
     537421: {"venue": "Levi's Stadium, Santa Clara, CA",
               "short": "1D vs 3rd(B/E/F/I/J)", "full": "Winner Group D vs Best 3rd Place (B/E/F/I/J)",
-              "ph": "United States", "pa": None},
+              "ph": "United States", "pa": "Bosnia and Herzegovina"},
     537420: {"venue": "SoFi Stadium, Inglewood, CA",
               "short": "1H vs 2J", "full": "Winner Group H vs Runner-up Group J",
               "ph": "Spain", "pa": "Austria"},
@@ -203,7 +204,7 @@ _KNOCKOUT = {
               "ph": "Portugal", "pa": "Croatia"},
     537429: {"venue": "BC Place, Vancouver, Canada",
               "short": "1B vs 3rd(E/F/G/I/J)", "full": "Winner Group B vs Best 3rd Place (E/F/G/I/J)",
-              "ph": "Switzerland", "pa": None},
+              "ph": "Switzerland", "pa": "Algeria"},
     537428: {"venue": "AT&T Stadium, Arlington, TX",
               "short": "2D vs 2G", "full": "Runner-up Group D vs Runner-up Group G",
               "ph": "Australia", "pa": "Egypt"},
@@ -212,7 +213,7 @@ _KNOCKOUT = {
               "ph": "Argentina", "pa": "Cape Verde"},
     537430: {"venue": "GEHA Field at Arrowhead, Kansas City, MO",
               "short": "1K vs 3rd(D/E/I/J/L)", "full": "Winner Group K vs Best 3rd Place (D/E/I/J/L)",
-              "ph": "Colombia", "pa": None},
+              "ph": "Colombia", "pa": "Ghana"},
     # Round of 16 ── M89-M96
     537376: {"venue": "NRG Stadium, Houston, TX",
               "short": "W73 vs W75", "full": "Winner Match 73 vs Winner Match 75",
