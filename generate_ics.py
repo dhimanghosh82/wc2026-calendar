@@ -160,7 +160,9 @@ _V_NORM = {frozenset({_norm(a), _norm(b)}): v for fs, v in _V.items() for a, b i
 # Key = football-data.org match ID (int)
 # short = compact bracket label shown when teams are TBD (e.g. "1C vs 2F")
 # full  = verbose bracket description for the DESCRIPTION field
-# ph/pa = predicted home/away team based on live group standings (kingdoggydog.github.io/worldcup2026, June 25 2026)
+# ph/pa = home/away team. Group winners & runners-up are FINAL (all 12 groups complete,
+#         kingdoggydog.github.io/worldcup2026 group-winners.json, June 28 2026).
+#         Best-third-place slots remain TBD (ph/pa = None) — shown as bracket labels.
 _KNOCKOUT = {
     # Round of 32 ── M73-M88
     537417: {"venue": "SoFi Stadium, Inglewood, CA",
@@ -189,22 +191,22 @@ _KNOCKOUT = {
               "ph": "England", "pa": None},
     537422: {"venue": "Lumen Field, Seattle, WA",
               "short": "1G vs 3rd(A/E/H/I/J)", "full": "Winner Group G vs Best 3rd Place (A/E/H/I/J)",
-              "ph": "Egypt", "pa": None},
+              "ph": "Belgium", "pa": None},
     537421: {"venue": "Levi's Stadium, Santa Clara, CA",
               "short": "1D vs 3rd(B/E/F/I/J)", "full": "Winner Group D vs Best 3rd Place (B/E/F/I/J)",
               "ph": "United States", "pa": None},
     537420: {"venue": "SoFi Stadium, Inglewood, CA",
               "short": "1H vs 2J", "full": "Winner Group H vs Runner-up Group J",
-              "ph": "Spain", "pa": "Algeria"},
+              "ph": "Spain", "pa": "Austria"},
     537419: {"venue": "BMO Field, Toronto, Canada",
               "short": "2K vs 2L", "full": "Runner-up Group K vs Runner-up Group L",
-              "ph": "Portugal", "pa": "Ghana"},
+              "ph": "Portugal", "pa": "Croatia"},
     537429: {"venue": "BC Place, Vancouver, Canada",
               "short": "1B vs 3rd(E/F/G/I/J)", "full": "Winner Group B vs Best 3rd Place (E/F/G/I/J)",
               "ph": "Switzerland", "pa": None},
     537428: {"venue": "AT&T Stadium, Arlington, TX",
               "short": "2D vs 2G", "full": "Runner-up Group D vs Runner-up Group G",
-              "ph": "Australia", "pa": "Belgium"},
+              "ph": "Australia", "pa": "Egypt"},
     537427: {"venue": "Hard Rock Stadium, Miami Gardens, FL",
               "short": "1J vs 2H", "full": "Winner Group J vs Runner-up Group H",
               "ph": "Argentina", "pa": "Cape Verde"},
