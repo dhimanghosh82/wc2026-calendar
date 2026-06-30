@@ -9,6 +9,7 @@ Season: 2026
 """
 
 import os
+import re
 import json
 import urllib.request
 import urllib.error
@@ -269,6 +270,60 @@ _KNOCKOUT = {
               "ph": None, "pa": None},
 }
 
+# ── Bracket progression ───────────────────────────────────────────────────────
+# FIFA match number (M73–M104) → football-data.org match id. Used to advance the
+# bracket from results: the "short" labels above reference source matches by FIFA
+# number (e.g. "W73 vs W75", "L101 vs L102"), and this map resolves those numbers
+# to the API match objects that carry the actual results.
+_M_TO_ID = {
+    73: 537417, 74: 537415, 75: 537418, 76: 537423, 77: 537416, 78: 537424,
+    79: 537425, 80: 537426, 81: 537421, 82: 537422, 83: 537419, 84: 537420,
+    85: 537429, 86: 537427, 87: 537430, 88: 537428,
+    89: 537376, 90: 537375, 91: 537377, 92: 537378, 93: 537379, 94: 537380,
+    95: 537381, 96: 537382, 97: 537383, 98: 537384, 99: 537385, 100: 537386,
+    101: 537387, 102: 537388, 103: 537389, 104: 537390,
+}
+
+def _winner_loser(m):
+    """(winner_name, loser_name) for a FINISHED knockout match, else (None, None).
+    Relies on football-data's score.winner, which already reflects extra time and
+    penalty shootouts."""
+    if not m or m.get("status") != "FINISHED":
+        return None, None
+    w    = (m.get("score") or {}).get("winner")
+    home = (m.get("homeTeam") or {}).get("name")
+    away = (m.get("awayTeam") or {}).get("name")
+    if w == "HOME_TEAM":
+        return home, away
+    if w == "AWAY_TEAM":
+        return away, home
+    return None, None
+
+def advance_bracket(matches):
+    """Propagate winners/losers of finished knockout matches into the predictions
+    (ph/pa) of the matches they feed, so the bracket advances from real results
+    even before the API populates the next round's team slots. The display layer
+    (_ko_slot) still prefers the API's own team names when present, so this only
+    ever leads — never overrides — the official data."""
+    by_id = {m.get("id"): m for m in matches}
+
+    def resolve(token):
+        # token like "W73" / "L101" → winner/loser name of that FIFA match, or None
+        kind, num = token[0], int(token[1:])
+        src = by_id.get(_M_TO_ID.get(num))
+        win, lose = _winner_loser(src)
+        return win if kind == "W" else lose
+
+    for meta in _KNOCKOUT.values():
+        parts = meta.get("short", "").split(" vs ", 1)
+        if len(parts) != 2:
+            continue
+        for tok, key in ((parts[0].strip(), "ph"), (parts[1].strip(), "pa")):
+            if re.fullmatch(r"[WL]\d+", tok):
+                name = resolve(tok)
+                if name:
+                    meta[key] = name
+
 def _lookup_venue(match):
     # Knockout metadata has venue for every non-group match (API omits it)
     ko = _KNOCKOUT.get(match.get("id"))
@@ -451,6 +506,9 @@ def main():
 
     matches = data.get("matches", [])
     print(f"✅  Got {len(matches)} matches from API.")
+
+    # Advance knockout predictions from finished-match results
+    advance_bracket(matches)
 
     cal  = "BEGIN:VCALENDAR\r\n"
     cal += "VERSION:2.0\r\n"
