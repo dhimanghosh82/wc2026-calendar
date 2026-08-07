@@ -1,12 +1,8 @@
 name: Update FIFA WC 2026 Calendar
 
 on:
-  schedule:
-    # Every 15 min during match hours (16:00–03:00 UTC = noon–11pm ET)
-    - cron: "*/15 16-23 * * *"
-    - cron: "*/15 0-3 * * *"
-    # Every 3 hours outside match hours (quiet period)
-    - cron: "0 4-15 * * *"
+  # Scheduled auto-updates removed after the tournament concluded (Aug 2026).
+  # The calendar is final; run manually via workflow_dispatch only if needed.
   workflow_dispatch:
 
 jobs:
